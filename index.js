@@ -3,13 +3,15 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const asyncHandler = require('express-async-handler');
 const dotenv = require('dotenv');
+
 dotenv.config();
 
 const app = express();
 
-//?Middle wair
-app.use(cors({ origin: '*' }))
+// Middleware
+app.use(cors({ origin: '*' }));
 app.use(express.json());
+
 //? setting static folder path
 app.use('/image/products', express.static('public/products'));
 app.use('/image/category', express.static('public/category'));
@@ -23,14 +25,6 @@ const db = mongoose.connection;
 db.on('error', (error) => console.error(error));
 db.once('open', () => console.log('Connected to Database'));
 
-// Example route using asyncHandler directly in app.js
-// app.get('/', asyncHandler(async (req, res) => {
-//     res.json({ success: true, message: 'API working successfully!!', data: null });
-// }));
-
-app.get("/", (req, res) => {
-    res.send("[]");
-});
 
 // Routes
 app.use('/categories', require('./routes/category'));
@@ -47,6 +41,15 @@ app.use('/payment', require('./routes/payment'));
 app.use('/notification', require('./routes/notification'));
 
 
+// Example route using asyncHandler directly in app.js
+app.get('/', asyncHandler(async (req, res) => {
+    res.json({ success: true, message: 'API working successfully!!', data: null });
+}));
+
+// app.get("/", (req, res) => {
+//     res.send("[]");
+// });
+
 
 
 // Global error handler
@@ -54,6 +57,8 @@ app.use((error, req, res, next) => {
     res.status(500).json({ success: false, message: error.message, data: null });
 });
 
+
+module.exports = app;
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
