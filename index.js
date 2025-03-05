@@ -9,7 +9,8 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors({ origin: '*' }));
+app.use(cors());
+// app.use(cors({ origin: '*' }));
 app.use(express.json());
 
 //? setting static folder path
@@ -42,13 +43,13 @@ app.use('/notification', require('./routes/notification'));
 
 
 // Example route using asyncHandler directly in app.js
-app.get('/', asyncHandler(async (req, res) => {
-    res.json({ success: true, message: 'API working successfully!!', data: null });
-}));
+// app.get('/', asyncHandler(async (req, res) => {
+//     res.json({ success: true, message: 'API working successfully!!', data: null });
+// }));
 
-// app.get("/", (req, res) => {
-//     res.send("[]");
-// });
+app.get("/", (req, res) => {
+    res.send("[]");
+});
 
 
 
